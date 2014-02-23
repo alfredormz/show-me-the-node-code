@@ -4,6 +4,8 @@ var express = require('express'),
 
 var app = express();
 
+app.use(express.logger('dev'));
+
 function lookup(package_name, callback){
   var npm_url = "https://www.npmjs.org/package/" + package_name;
 
