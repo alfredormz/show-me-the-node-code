@@ -24,7 +24,7 @@ function lookup(package_name, callback){
 
 }
 
-app.get("/repo/:package_name", function(req, res){
+app.get("/:package_name", function(req, res){
   var package_name = req.params.package_name;
 
   lookup(package_name, function(error, url){
