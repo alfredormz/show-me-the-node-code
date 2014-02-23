@@ -2,6 +2,8 @@
 
 Get redirected to a npmjs's canonical repository. Inspired by Cubox's Canonical Repo.
 
+![Show me the code](https://dl.dropboxusercontent.com/u/789623/showme.gif "Show me the code")
+
 ## Usage
 
 Add it as Chrome search engine pointing to `http://showmethenodecode.herokuapp.com/%s`. Then, all you need to do is type in your URL bar npm <PACKAGE_NAME>, and you'll get instantly redirected to the corresponding page.
