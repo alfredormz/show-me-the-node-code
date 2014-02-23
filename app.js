@@ -6,8 +6,9 @@ var app = express();
 
 app.use(express.logger('dev'));
 
-function lookup(package_name, callback){
-  var npm_url = "https://www.npmjs.org/package/" + package_name;
+function lookup(req, res, next){
+  var package_name = req.params.package_name,
+      npm_url = "https://www.npmjs.org/package/" + package_name;
 
   request(npm_url, function(error, response, body){
 
@@ -16,25 +17,18 @@ function lookup(package_name, callback){
       var url = $(".metadata tr:contains('Repository') a").attr("href") ||
                 $(".metadata tr:contains('Homepage') a").attr("href");
 
-      callback(null, url);
+      url ? res.redirect(301, url) :
+            res.status(404).send("Repo for " + package_name + " not found");
+
     } else {
-      return callback("Error");
+      next(error);
     }
+
   });
 
 }
 
-app.get("/:package_name", function(req, res){
-  var package_name = req.params.package_name;
-
-  lookup(package_name, function(error, url){
-    if(!error && url) {
-      res.redirect(301, url);
-    } else {
-      res.status(404).send("Repo for " + package_name + " not found");
-    }
-  });
-});
+app.get("/:package_name", lookup);
 
 var port = Number(process.env.PORT || 5000);
 app.listen(port);
