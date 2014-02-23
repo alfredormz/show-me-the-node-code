@@ -22,7 +22,7 @@ function lookup(req, res, next){
       var url = extract_url(body);
 
       url ? res.redirect(301, url) :
-            res.status(404).send("Repo for " + package_name + " not found");
+            next(new Error(package_name + " not found"));
 
     } else {
       next(error);
@@ -32,7 +32,12 @@ function lookup(req, res, next){
 
 }
 
-app.get("/:package_name", lookup);
+function lookup_error_handler(err, req, res, next){
+  console.log(err.message);
+  res.status(404).send("There was an error: " + err.message);
+}
+
+app.get("/:package_name", lookup, lookup_error_handler);
 
 var port = Number(process.env.PORT || 5000);
 app.listen(port);
