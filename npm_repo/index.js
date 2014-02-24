@@ -14,18 +14,13 @@ exports.lookup = function(req, res, next){
 
   request(npm_url, function(error, response, body){
 
-    if(!error){
-      var url = extract_url(body);
+    if(error) { next(error); }
 
-      url ? res.redirect(301, url) :
-            next(new Error("repo " + package_name + " not found"));
-
-    } else {
-      next(error);
-    }
+    var url = extract_url(body);
+    url ? res.redirect(301, url) :
+          next(new Error("repo " + package_name + " not found"));
 
   });
-
 }
 
 exports.error_handler = function(err, req, res, next){
